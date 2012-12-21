@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genesis", "Genesis.csproj", "{450D3A0D-0A50-4C88-BDC1-D55D147D5E02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genesis", "Genesis\Genesis.csproj", "{450D3A0D-0A50-4C88-BDC1-D55D147D5E02}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenesisTest", "GenesisTest\GenesisTest.csproj", "{F1742559-9FA1-484B-86E0-1D4C6888AECE}"
 EndProject
