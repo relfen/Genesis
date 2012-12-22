@@ -1,0 +1,13 @@
+<Races>
+	<Race>
+		<Name>Elf</Name>
+		<Points>45</Points>
+		<Attributes>
+		  <Attribute>
+			<Name>Infravision</Name>
+			<Cost>5</Cost>
+			<Description>Allows the character to see in the dark 60'.</Description>
+		  </Attribute>
+		</Attributes>
+	</Race>
+</Races>
