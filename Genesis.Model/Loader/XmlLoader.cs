@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using Genesis.Model.Attribute;
 
 namespace Genesis.Model.Loader
 {
@@ -47,6 +48,7 @@ namespace Genesis.Model.Loader
             return new CharacterAttributeCollection
             {
                 Points              = GetIntFromXml(node, "Points"),
+                Rollover            = GetStringFromXml(node, "Rollover"),
                 SectionName         = GetStringFromXml(node, "Name"),
                 CharacterAttributes = GetAttributes(node),
             };

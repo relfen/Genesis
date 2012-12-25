@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Genesis.Model.Attribute;
 
 namespace Genesis.Model.Loader
 {
