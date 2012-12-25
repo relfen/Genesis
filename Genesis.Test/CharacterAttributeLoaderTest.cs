@@ -1,5 +1,7 @@
 ﻿using System.IO;
-using Genesis.Model;
+using System.Xml;
+using System.Xml.Linq;
+using Genesis.Model.Loader;
 using NUnit.Framework;
 
 namespace Genesis.Test
@@ -7,32 +9,59 @@ namespace Genesis.Test
     [TestFixture]
     public class CharacterAttributeLoaderTest
     {
+        private const string RaceName                 = "Elf";
+        private const int    RacePoints               = 45;
+        private const string RaceAttributeName        = "Infravision";
+        private const int    RaceAttributeCost        = 5;
+        private const string RaceAttributeDescription = "Allows the character to see in the dark 60'.";
 
-        private const string RaceModelFile = @"D:\Code\Genesis\Genesis.Test\Races.xml";
-        //private const string ClassModelFile = "Classes.xml";
+        #region Setup/Helpers
+        
+        private string CreateMockRaceXml()
+        {
+            return new XDocument(
+                new XElement("Races",
+                    new XElement("Race",
+                        new XElement("Name", RaceName),
+                        new XElement("Points", RacePoints),
+                        new XElement("Attributes",
+                            new XElement("Attribute",
+                                new XElement("Name", RaceAttributeName),
+                                new XElement("Cost", RaceAttributeCost),
+                                new XElement("Description", RaceAttributeDescription)
+                                ))))).ToString();
+
+        }
+
+        #endregion Setup/Helpers
+
+        #region Tests
 
         [Test]
-        public void SuccessfullyLoadRacesFromFile()
+        public void SuccessfullyLoadRaceCollection()
         {
-            var races = CharacterAttributeLoader.LoadFromFile(RaceModelFile, "//Race");
+            var loader = new XmlLoader(CreateMockRaceXml());
+            var races  = loader.GetCharacterAttributeCollection(XmlXPathConfiguration.RaceRootLocation);
 
             Assert.IsNotNull(races);
-            Assert.IsTrue(races.Count > 0);
-            Assert.IsTrue(races[0].Points == 45);
-            Assert.IsTrue(races[0].SectionName == "Elf");
+            Assert.IsTrue(races.Count == 1);
+            Assert.IsTrue(races[0].SectionName == RaceName);
+            Assert.IsTrue(races[0].Points == RacePoints);
             Assert.IsNotNull(races[0].CharacterAttributes);
 
             var charAttribute = races[0].CharacterAttributes[0];
-            Assert.IsTrue(charAttribute.Name == "Infravision");
-            Assert.IsTrue(charAttribute.Cost == 5);
-            Assert.IsTrue(charAttribute.Description == "Allows the character to see in the dark 60'.");
+            Assert.IsTrue(charAttribute.Name == RaceAttributeName);
+            Assert.IsTrue(charAttribute.Cost == RaceAttributeCost);
+            Assert.IsTrue(charAttribute.Description == RaceAttributeDescription);
         }
 
         [Test]
-        [ExpectedException(typeof(FileNotFoundException))]
-        public void FailToLoadRacesFromInvalidFileName()
+        [ExpectedException()]
+        public void ThrowExceptionOnNullDocument()
         {
-            CharacterAttributeLoader.LoadFromFile(null, null);
+            var loader = new XmlLoader(null);
         }
+
+        #endregion Tests
     }
 }
