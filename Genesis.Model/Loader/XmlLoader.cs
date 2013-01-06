@@ -18,18 +18,36 @@ namespace Genesis.Model.Loader
             _doc.LoadXml(data);
         }
 
-        public List<CharacterAttributeCollection> GetCharacterAttributeCollection(string configLocation)
+        public CharacterAttributes GetCharacterAttributes()
         {
-            var characterAttributes = new List<CharacterAttributeCollection>();
+            return new CharacterAttributes()
+            {
+                RaceAttributes                 = GetRaceAttributeCollection(),
+                ClassAttributes                = GetClassAttributeCollection(),
+                NonWeaponProficiencyAttributes = GetNonWeaponProficiencyAttributeCollection(),
+                WeaponProficiencyAttributes    = GetWeaponProficiencyAttributeCollection(),
+            };
+        }
+
+        private List<AttributeCollection> GetRaceAttributeCollection()
+        {
+            var characterAttributes = new List<AttributeCollection>();
 
             try
             {
-                var sections = _doc.SelectNodes(configLocation);
+                var sections = _doc.SelectNodes(XmlXPathConfiguration.RaceRootLocation);
                 if(null == sections)
                     throw new XmlException("Invalid or missing Xml");
 
-                characterAttributes.AddRange(from XmlNode section in sections 
-                                             select FromXml(section));
+                characterAttributes.AddRange(from XmlNode node in sections
+                                             select new AttributeCollection
+                                             {
+                                                Points     = GetIntFromXml(node, "Points"), 
+                                                Rollover   = GetIntFromXml(node, "Rollover"), 
+                                                Group      = GetStringFromXml(node, "Group"), 
+                                                Name       = GetStringFromXml(node, "Name"), 
+                                                Attributes = GetBaseAttributes(node),
+                                             });
 
                 return characterAttributes;
 
@@ -40,34 +58,137 @@ namespace Genesis.Model.Loader
             }
         }
 
-        private CharacterAttributeCollection FromXml(XmlNode node)
+        private List<AttributeCollection> GetClassAttributeCollection()
         {
-            if (null == node)
-                throw new NullReferenceException("Xml section is missing.  Please validate the source xml files.");
+            var characterAttributes = new List<AttributeCollection>();
 
-            return new CharacterAttributeCollection
+            try
             {
-                Points              = GetIntFromXml(node, "Points"),
-                Rollover            = GetStringFromXml(node, "Rollover"),
-                SectionName         = GetStringFromXml(node, "Name"),
-                CharacterAttributes = GetAttributes(node),
-            };
+                var sections = _doc.SelectNodes(XmlXPathConfiguration.ClassRootLocation);
+                if(null == sections)
+                    throw new XmlException("Invalid or missing Xml");
+
+                characterAttributes.AddRange(from XmlNode node in sections
+                                             select new AttributeCollection
+                                             {
+                                                Points     = GetIntFromXml(node, "Points"), 
+                                                Rollover   = GetIntFromXml(node, "Rollover"), 
+                                                Group      = GetStringFromXml(node, "Group"), 
+                                                Name       = GetStringFromXml(node, "Name"), 
+                                                Attributes = GetBaseAttributes(node),
+                                             });
+
+                return characterAttributes;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to load Attribute list", ex);
+            }
         }
 
-        private List<CharacterAttribute> GetAttributes(XmlNode node)
+        private List<AttributeCollection> GetNonWeaponProficiencyAttributeCollection()
+        {
+            var characterAttributes = new List<AttributeCollection>();
+
+            try
+            {
+                var sections = _doc.SelectNodes(XmlXPathConfiguration.NonWeaponProficiencyRootLocation);
+                if(null == sections)
+                    throw new XmlException("Invalid or missing Xml");
+
+                characterAttributes.AddRange(from XmlNode node in sections
+                                             select new AttributeCollection
+                                             {
+                                                Points     = GetIntFromXml(node, "Points"), 
+                                                Rollover   = GetIntFromXml(node, "Rollover"), 
+                                                Group      = GetStringFromXml(node, "Group"), 
+                                                Name       = GetStringFromXml(node, "Name"), 
+                                                Attributes = GetNonWeaponProficiencyAttributes(node),
+                                             });
+
+                return characterAttributes;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to load Attribute list", ex);
+            }
+        }
+
+        private List<AttributeCollection> GetWeaponProficiencyAttributeCollection()
+        {
+            var characterAttributes = new List<AttributeCollection>();
+
+            try
+            {
+                var sections = _doc.SelectNodes(XmlXPathConfiguration.NonWeaponProficiencyRootLocation);
+                if (null == sections)
+                    throw new XmlException("Invalid or missing Xml");
+
+                characterAttributes.AddRange(from XmlNode node in sections
+                                             select new AttributeCollection
+                                             {
+                                                 Points = GetIntFromXml(node, "Points"),
+                                                 Rollover = GetIntFromXml(node, "Rollover"),
+                                                 Group = GetStringFromXml(node, "Group"),
+                                                 Name = GetStringFromXml(node, "Name"),
+                                                 Attributes = GetNonWeaponProficiencyAttributes(node),
+                                             });
+
+                return characterAttributes;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to load Attribute list", ex);
+            }
+        }
+
+        private List<BaseAttribute> GetBaseAttributes(XmlNode node)
         {
             var attributeNodes = node.SelectNodes("//Attribute");
             if (null == attributeNodes)
                 throw new XmlException("Missing attributes section.  Please validate the source xml files.");
 
             return (from XmlNode attributeNode in attributeNodes
-                    select new CharacterAttribute
+                    select new BaseAttribute
                     {
                         Name        = GetStringFromXml(attributeNode, "Name"),
                         Description = GetStringFromXml(attributeNode, "Description"),
                         Cost        = GetIntFromXml(attributeNode, "Cost"),
                     }).ToList();
+        }
 
+        private List<NonWeaponProficiencyAttribute> GetNonWeaponProficiencyAttributes(XmlNode node)
+        {
+            var attributeNodes = node.SelectNodes("//Attribute");
+            if (null == attributeNodes)
+                throw new XmlException("Missing attributes section.  Please validate the source xml files.");
+
+            return (from XmlNode attributeNode in attributeNodes
+                    select new NonWeaponProficiencyAttribute()
+                    {
+                        Name        = GetStringFromXml(attributeNode, "Name"),
+                        Description = GetStringFromXml(attributeNode, "Description"),
+                        Cost        = GetIntFromXml(attributeNode, "Cost"),
+                        BaseScore   = GetIntFromXml(attributeNode, "BaseScore")
+                    }).ToList();
+        }
+
+        private List<WeaponProficiencyAttribute> GetWeaponProficiencyAttributes(XmlNode node)
+        {
+            var attributeNodes = node.SelectNodes("//Attribute");
+            if (null == attributeNodes)
+                throw new XmlException("Missing attributes section.  Please validate the source xml files.");
+
+            return (from XmlNode attributeNode in attributeNodes
+                    select new WeaponProficiencyAttribute()
+                    {
+                        Name        = GetStringFromXml(attributeNode, "Name"),
+                        Description = GetStringFromXml(attributeNode, "Description"),
+                        Cost        = GetIntFromXml(attributeNode, "Cost"),
+                    }).ToList();
         }
 
         private int GetIntFromXml(XmlNode node, string element)
@@ -86,5 +207,6 @@ namespace Genesis.Model.Loader
 
             return node[element].InnerText;
         }
+
     }
 }

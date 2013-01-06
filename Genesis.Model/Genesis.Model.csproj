@@ -39,9 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\NonWeaponProficiencyAttribute.cs" />
+    <Compile Include="CharacterAttributes.cs" />
+    <Compile Include="Attribute\WeaponProficiencyAttribute.cs" />
     <Compile Include="Loader\XmlLoader.cs" />
-    <Compile Include="Attribute\CharacterAttribute.cs" />
-    <Compile Include="Attribute\CharacterAttributeCollection.cs" />
+    <Compile Include="Attribute\BaseAttribute.cs" />
+    <Compile Include="Attribute\AttributeCollection.cs" />
     <Compile Include="Loader\ILoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Loader\XmlXPathConfiguration.cs" />

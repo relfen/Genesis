@@ -1,6 +1,6 @@
-﻿namespace Genesis.Model
+﻿namespace Genesis.Model.Attribute
 {
-    internal class CharacterAttribute
+    internal class BaseAttribute
     {
         internal string Name        { get; set; }
         internal string Description { get; set; }
