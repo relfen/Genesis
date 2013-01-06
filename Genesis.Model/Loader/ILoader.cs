@@ -1,7 +1,9 @@
-﻿namespace Genesis.Model.Loader
+﻿using Genesis.Model.Attribute;
+
+namespace Genesis.Model.Loader
 {
     internal interface ILoader
     {
-        CharacterAttributes GetCharacterAttributes();
+        CharacterElements GetCharacterAttributes();
     }
 }

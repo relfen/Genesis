@@ -97,7 +97,7 @@ namespace Genesis.Test
         public void SuccessfullyLoadRaceCollection()
         {
             var loader = new XmlLoader(CreateMockRaceXml());
-            var races  = loader.GetRaceAttributeCollection(XmlXPathConfiguration.RaceRootLocation);
+            var races  = loader.GetAttributeCollection(XmlXPathConfiguration.RaceRootLocation);
 
             Assert.IsNotNull(races);
             Assert.IsTrue(races.Count == 1);
@@ -117,7 +117,7 @@ namespace Genesis.Test
         public void SuccessfullyLoadClassCollection()
         {
             var loader  = new XmlLoader(CreateMockClassXml());
-            var classes = loader.GetRaceAttributeCollection(XmlXPathConfiguration.ClassRootLocation);
+            var classes = loader.GetAttributeCollection(XmlXPathConfiguration.ClassRootLocation);
 
             Assert.IsNotNull(classes);
             Assert.IsTrue(classes.Count == 1);
@@ -137,7 +137,7 @@ namespace Genesis.Test
         public void SuccessfullyLoadNWPCollection()
         {
             var loader  = new XmlLoader(CreateMockClassXml());
-            var nwpList = loader.GetRaceAttributeCollection(XmlXPathConfiguration.NonWeaponProficiencyRootLocation);
+            var nwpList = loader.GetAttributeCollection(XmlXPathConfiguration.NonWeaponProficiencyRootLocation);
 
             Assert.IsNotNull(nwpList);
             Assert.IsTrue(nwpList.Count == 1);

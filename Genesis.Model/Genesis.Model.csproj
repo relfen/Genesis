@@ -39,12 +39,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute\NonWeaponProficiencyAttribute.cs" />
-    <Compile Include="CharacterAttributes.cs" />
-    <Compile Include="Attribute\WeaponProficiencyAttribute.cs" />
+    <Compile Include="Attribute\Advantage.cs" />
+    <Compile Include="Attribute\CharacterClass.cs" />
+    <Compile Include="Attribute\ClassAbility.cs" />
+    <Compile Include="Attribute\AdvantageCollection.cs" />
+    <Compile Include="Attribute\NonWeaponProficiencyCollection.cs" />
+    <Compile Include="Attribute\WeaponProficiencyCollection.cs" />
+    <Compile Include="Attribute\Disadvantage.cs" />
+    <Compile Include="Attribute\DisadvantageCollection.cs" />
+    <Compile Include="Attribute\Race.cs" />
+    <Compile Include="Attribute\NonWeaponProficiency.cs" />
+    <Compile Include="Attribute\CharacterElements.cs" />
+    <Compile Include="Attribute\RaceAbility.cs" />
+    <Compile Include="Attribute\WeaponProficiency.cs" />
     <Compile Include="Loader\XmlLoader.cs" />
-    <Compile Include="Attribute\BaseAttribute.cs" />
-    <Compile Include="Attribute\AttributeCollection.cs" />
+    <Compile Include="Attribute\CommonElements.cs" />
+    <Compile Include="Attribute\CommonGroupElements.cs" />
     <Compile Include="Loader\ILoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Loader\XmlXPathConfiguration.cs" />
