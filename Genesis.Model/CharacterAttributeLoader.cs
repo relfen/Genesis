@@ -8,7 +8,7 @@ namespace Genesis.Model
 {
     internal static class CharacterAttributeLoader
     {
-        // TODO:  Change this to use dependency injection so we can inject a data from the web or from a local file (or both!).  This is ok for now.
+        // TODO:  Change this to use dependency injection so we can inject data from the web or from a local file (or both!).  This is ok for now.
         internal static List<CharacterAttributeCollection> LoadFromFile(string file, string sectionPath)
         {
             var characterAttributes = new List<CharacterAttributeCollection>();
